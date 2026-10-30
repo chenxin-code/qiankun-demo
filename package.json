@@ -1,0 +1,18 @@
+{
+  "name": "qiankun-demo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:main\" \"npm run dev:vue3\" \"npm run dev:vue2\"",
+    "dev:main": "npm --prefix main-app run dev",
+    "dev:vue3": "npm --prefix sub-app-vue3 run dev",
+    "dev:vue2": "npm --prefix sub-app-vue2 run dev",
+    "install:all": "npm install && npm --prefix main-app install && npm --prefix sub-app-vue3 install && npm --prefix sub-app-vue2 install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
+  "dependencies": {
+    "main-app": "file:main-app"
+  }
+}

@@ -12,39 +12,51 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { registerMicroApps, start } from 'qiankun'
+import { loadMicroApp } from 'qiankun'
 
 const currentApp = ref<string>('')
-let appsRegistered = false
+let microApp: any = null
 
 onMounted(() => {
-  if (!appsRegistered) {
-    registerMicroApps([
-      {
-        name: 'sub-app-vue3',
-        entry: '//localhost:8083',
-        container: '#sub-app-container',
-        activeRule: () => currentApp.value === 'vue3',
-      },
-      {
-        name: 'sub-app-vue2',
-        entry: '//localhost:8084',
-        container: '#sub-app-container',
-        activeRule: () => currentApp.value === 'vue2',
-      },
-    ])
-
-    start({
-      sandbox: {
-        experimentalStyleIsolation: true,
-      },
-    })
-    appsRegistered = true
-  }
+  console.log('SubApp component mounted')
 })
 
 function loadApp(app: string) {
+  // 先卸载当前子应用
+  if (microApp) {
+    console.log('Unmounting previous app')
+    microApp.unmount()
+    microApp = null
+  }
+
   currentApp.value = app
+
+  // 加载新的子应用
+  const entry = app === 'vue3' ? '//localhost:8081' : '//localhost:8082'
+  const appName = app === 'vue3' ? 'sub-app-vue3' : 'sub-app-vue2'
+  
+  console.log(`Loading ${appName} from ${entry}`)
+  
+  microApp = loadMicroApp(
+    {
+      name: appName,
+      entry,
+      container: '#sub-app-container',
+    },
+    {
+      sandbox: {
+        experimentalStyleIsolation: true,
+      },
+    }
+  )
+  
+  console.log('loadMicroApp returned:', microApp)
+  
+  // 监听加载状态
+  setTimeout(() => {
+    const container = document.querySelector('#sub-app-container')
+    console.log('Container children:', container?.children.length)
+  }, 2000)
 }
 </script>
 
