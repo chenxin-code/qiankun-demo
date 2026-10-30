@@ -1,44 +1,36 @@
 <template>
   <div class="home">
-    <h2>Qiankun 微前端演示</h2>
-    <p class="subtitle">点击下方卡片加载对应子应用</p>
-    <div class="info-cards">
-      <div class="card main">
-        <div class="card-header">
-          <span class="badge">主应用</span>
-          <h3>Main App</h3>
+    <div class="section-header">
+      <h3>子应用列表</h3>
+      <span class="app-count">{{ subApps.length }} 个应用</span>
+    </div>
+
+    <div class="sub-apps-grid">
+      <div
+        v-for="app in subApps"
+        :key="app.id"
+        class="app-card"
+        :class="{ active: currentApp === app.id }"
+        @click="loadApp(app.id)"
+      >
+        <div class="app-card-header">
+          <span class="badge" :class="app.theme">{{ app.badge }}</span>
+          <span class="status" v-if="currentApp === app.id">运行中</span>
         </div>
-        <p class="tech">Vite + Vue3 + TypeScript</p>
-        <p class="port">端口: 8080</p>
-        <p class="desc">负责路由分发和子应用加载</p>
-      </div>
-      <div class="card vue3" :class="{ active: currentApp === 'vue3' }" @click="loadApp('vue3')">
-        <div class="card-header">
-          <span class="badge">子应用</span>
-          <h3>Vue3 App</h3>
-        </div>
-        <p class="tech">Vite + Vue3 + Element Plus</p>
-        <p class="port">端口: 8081</p>
-        <p class="desc">展示 Vue3 组件和表格数据</p>
-        <div class="load-hint">
-          <span v-if="currentApp === 'vue3'">✓ 已加载</span>
-          <span v-else>点击加载 →</span>
-        </div>
-      </div>
-      <div class="card vue2" :class="{ active: currentApp === 'vue2' }" @click="loadApp('vue2')">
-        <div class="card-header">
-          <span class="badge">子应用</span>
-          <h3>Vue2 App</h3>
-        </div>
-        <p class="tech">Vite + Vue2 + Element UI</p>
-        <p class="port">端口: 8082</p>
-        <p class="desc">展示 Vue2 组件和表单功能</p>
-        <div class="load-hint">
-          <span v-if="currentApp === 'vue2'">✓ 已加载</span>
-          <span v-else>点击加载 →</span>
+        <h4>{{ app.name }}</h4>
+        <p class="app-tech">{{ app.tech }}</p>
+        <div class="app-footer">
+          <span class="app-port">:{{ app.port }}</span>
+          <button class="open-btn" @click.stop="openApp(app.port)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+            </svg>
+            localhost:{{ app.port }}
+          </button>
         </div>
       </div>
     </div>
+
     <div v-if="currentApp" id="sub-app-container" class="sub-app-container"></div>
   </div>
 </template>
@@ -47,11 +39,34 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { loadMicroApp } from 'qiankun'
 
+interface SubApp {
+  id: string
+  name: string
+  badge: string
+  tech: string
+  port: number
+  theme: string
+}
+
+const subApps: SubApp[] = [
+  { id: 'vue3', name: 'Vue3 App', badge: '子应用', tech: 'Vue3 + Element Plus', port: 8081, theme: 'vue3' },
+  { id: 'vue2', name: 'Vue2 App', badge: '子应用', tech: 'Vue2 + Element UI', port: 8082, theme: 'vue2' },
+  { id: 'react', name: 'React App', badge: '子应用', tech: 'React 19 + Ant Design', port: 8083, theme: 'react' },
+]
+
 const currentApp = ref<string>('')
 let microApp: any = null
 
-function loadApp(app: string) {
-  if (microApp && currentApp.value === app) {
+function getAppConfig(id: string) {
+  return subApps.find(app => app.id === id)
+}
+
+function openApp(port: number) {
+  window.open(`http://localhost:${port}`, '_blank')
+}
+
+function loadApp(appId: string) {
+  if (microApp && currentApp.value === appId) {
     microApp.unmount()
     microApp = null
     currentApp.value = ''
@@ -63,15 +78,15 @@ function loadApp(app: string) {
     microApp = null
   }
 
-  currentApp.value = app
+  const config = getAppConfig(appId)
+  if (!config) return
 
-  const entry = app === 'vue3' ? '//localhost:8081' : '//localhost:8082'
-  const appName = app === 'vue3' ? 'sub-app-vue3' : 'sub-app-vue2'
+  currentApp.value = appId
 
   microApp = loadMicroApp(
     {
-      name: appName,
-      entry,
+      name: `sub-app-${appId}`,
+      entry: `//localhost:${config.port}`,
       container: '#sub-app-container',
     },
     {
@@ -91,123 +106,197 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .home {
-  padding: 20px 0;
-}
-
-.home h2 {
-  margin-bottom: 8px;
-  color: #303133;
-}
-
-.subtitle {
-  color: #909399;
-  margin-bottom: 24px;
-}
-
-.info-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid #e4e7ed;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.card:not(.main) {
-  cursor: pointer;
-}
-
-.card:not(.main):hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border-color: #409eff;
-}
-
-.card.active {
-  border-color: #67c23a;
-  box-shadow: 0 4px 16px rgba(103, 194, 58, 0.15);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  padding: 24px 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .badge {
+  display: inline-block;
   font-size: 12px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
   font-weight: 500;
 }
 
-.card.main .badge {
-  background: #ecf5ff;
-  color: #409eff;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
-.card.vue3 .badge {
-  background: #f0f9eb;
-  color: #67c23a;
-}
-
-.card.vue2 .badge {
-  background: #fdf6ec;
-  color: #e6a23c;
-}
-
-.card h3 {
+.section-header h3 {
   font-size: 18px;
   color: #303133;
   margin: 0;
 }
 
-.card .tech {
-  font-size: 14px;
-  color: #606266;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-.card .port {
+.app-count {
   font-size: 13px;
   color: #909399;
+  background: #f4f4f5;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.sub-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.app-card {
+  background: white;
+  border: 2px solid #e4e7ed;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #409eff;
+}
+
+.app-card.active {
+  border-color: #67c23a;
+  background: #f0f9eb;
+  box-shadow: 0 4px 16px rgba(103, 194, 58, 0.15);
+}
+
+.app-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 12px;
 }
 
-.card .desc {
-  font-size: 14px;
-  color: #606266;
-  margin-bottom: 0;
+.badge.vue3 {
+  background: #f0f9eb;
+  color: #67c23a;
+}
+
+.badge.vue2 {
+  background: #fdf6ec;
+  color: #e6a23c;
+}
+
+.badge.react {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.app-card.active .badge.vue3,
+.app-card.active .badge.vue2,
+.app-card.active .badge.react {
+  background: white;
+}
+
+.status {
+  font-size: 12px;
+  color: #67c23a;
+  font-weight: 500;
+}
+
+.status::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #67c23a;
+  margin-right: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.app-card h4 {
+  font-size: 16px;
+  color: #303133;
+  margin: 0 0 6px;
+}
+
+.app-tech {
+  font-size: 13px;
+  color: #909399;
+  margin: 0 0 16px;
+}
+
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 12px;
   border-top: 1px solid #ebeef5;
 }
 
-.load-hint {
-  position: absolute;
-  bottom: 16px;
-  right: 20px;
-  font-size: 13px;
-  color: #409eff;
-  font-weight: 500;
+.app-card.active .app-footer {
+  border-top-color: #c2e7b0;
 }
 
-.card.active .load-hint {
-  color: #67c23a;
+.app-port {
+  font-size: 13px;
+  color: #606266;
+  font-family: monospace;
+}
+
+.open-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #409eff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.open-btn:hover {
+  background: #337ecc;
+  transform: translateY(-1px);
+}
+
+.open-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.open-btn:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.app-card.active .open-btn {
+  background: #67c23a;
+}
+
+.app-card.active .open-btn:hover {
+  background: #529b2e;
 }
 
 .sub-app-container {
   margin-top: 24px;
   border: 2px dashed #409eff;
   border-radius: 12px;
-  min-height: 300px;
+  min-height: 400px;
   padding: 20px;
   background: #fafafa;
+}
+
+@media (max-width: 768px) {
+  .sub-apps-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
