@@ -2,10 +2,6 @@
   <div id="main-app">
     <nav class="navbar">
       <h1>Qiankun 微前端 - 主应用</h1>
-      <div class="nav-links">
-        <router-link to="/">首页</router-link>
-        <router-link to="/sub-app">子应用</router-link>
-      </div>
     </nav>
     <main class="content">
       <router-view />
