@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "element-ui": "^2.15.14",
+    "main-app": "file:../main-app",
     "vue": "^2.7.16"
   },
   "devDependencies": {

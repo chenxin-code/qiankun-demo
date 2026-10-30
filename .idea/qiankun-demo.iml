@@ -7,8 +7,14 @@
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/main-app/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/sub-app/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/sub-app-vue3/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/sub-app-vue2/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules" />
     </content>
     <content url="file://$MODULE_DIR$/main-app/node_modules" />
+    <content url="file://$MODULE_DIR$/node_modules" />
+    <content url="file://$MODULE_DIR$/sub-app-vue2/node_modules" />
+    <content url="file://$MODULE_DIR$/sub-app-vue3/node_modules" />
     <content url="file://$MODULE_DIR$/sub-app/node_modules" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
