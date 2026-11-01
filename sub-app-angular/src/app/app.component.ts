@@ -1,0 +1,92 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+
+export interface UserData {
+  id: number;
+  name: string;
+  age: number;
+  city: string;
+  department: string;
+  position: string;
+}
+
+const USER_DATA: UserData[] = [
+  { id: 1, name: '张伟', age: 28, city: '北京', department: '技术部', position: '前端开发' },
+  { id: 2, name: '李娜', age: 32, city: '上海', department: '技术部', position: '后端开发' },
+  { id: 3, name: '王强', age: 25, city: '广州', department: '产品部', position: '产品经理' },
+  { id: 4, name: '刘洋', age: 35, city: '深圳', department: '设计部', position: 'UI设计师' },
+  { id: 5, name: '陈静', age: 29, city: '杭州', department: '技术部', position: '全栈开发' },
+];
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, MatTableModule],
+  template: `
+    <div class="container">
+      <h2>Angular 子应用</h2>
+      <p class="tech-stack">技术栈：Angular 17 + Angular Material + TypeScript</p>
+      
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 user-table">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>姓名</th>
+          <td mat-cell *matCellDef="let element">{{element.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef>年龄</th>
+          <td mat-cell *matCellDef="let element">{{element.age}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef>城市</th>
+          <td mat-cell *matCellDef="let element">{{element.city}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef>部门</th>
+          <td mat-cell *matCellDef="let element">{{element.department}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>职位</th>
+          <td mat-cell *matCellDef="let element">{{element.position}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  `,
+  styles: [`
+    .container {
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h2 {
+      color: #303133;
+      margin-bottom: 8px;
+    }
+    
+    .tech-stack {
+      color: #909399;
+      margin-bottom: 24px;
+    }
+    
+    .user-table {
+      width: 100%;
+    }
+  `]
+})
+export class AppComponent {
+  displayedColumns: string[] = ['id', 'name', 'age', 'city', 'department', 'position'];
+  dataSource = USER_DATA;
+}

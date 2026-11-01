@@ -52,6 +52,7 @@ const subApps: SubApp[] = [
   { id: 'vue3', name: 'Vue3 App', badge: '子应用', tech: 'Vue3 + Element Plus', port: 8081, theme: 'vue3' },
   { id: 'vue2', name: 'Vue2 App', badge: '子应用', tech: 'Vue2 + Element UI', port: 8082, theme: 'vue2' },
   { id: 'react', name: 'React App', badge: '子应用', tech: 'React 19 + Ant Design', port: 8083, theme: 'react' },
+  { id: 'angular', name: 'Angular App', badge: '子应用', tech: 'Angular 17 + Material', port: 8084, theme: 'angular' },
 ]
 
 const currentApp = ref<string>('')
@@ -191,9 +192,15 @@ onBeforeUnmount(() => {
   color: #1890ff;
 }
 
+.badge.angular {
+  background: #fff1f0;
+  color: #dd0031;
+}
+
 .app-card.active .badge.vue3,
 .app-card.active .badge.vue2,
-.app-card.active .badge.react {
+.app-card.active .badge.react,
+.app-card.active .badge.angular {
   background: white;
 }
 
