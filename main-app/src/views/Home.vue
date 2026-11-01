@@ -1,10 +1,5 @@
 <template>
   <div class="home">
-    <div class="section-header">
-      <h3>子应用列表</h3>
-      <span class="app-count">{{ subApps.length }} 个应用</span>
-    </div>
-
     <div class="sub-apps-grid">
       <div
         v-for="app in subApps"
@@ -121,27 +116,6 @@ onBeforeUnmount(() => {
   padding: 4px 12px;
   border-radius: 20px;
   font-weight: 500;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.section-header h3 {
-  font-size: 18px;
-  color: #303133;
-  margin: 0;
-}
-
-.app-count {
-  font-size: 13px;
-  color: #909399;
-  background: #f4f4f5;
-  padding: 4px 12px;
-  border-radius: 12px;
 }
 
 .sub-apps-grid {
