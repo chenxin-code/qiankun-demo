@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:micro": "vite --mode micro",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
