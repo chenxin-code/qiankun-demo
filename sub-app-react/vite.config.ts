@@ -5,7 +5,9 @@ import qiankun from 'vite-plugin-qiankun'
 export default defineConfig({
   base: './',
   plugins: [
-    react(),
+    react({
+      reactRefresh: false,
+    }),
     qiankun('sub-app-react', {
       useDevMode: true,
     }),
@@ -13,6 +15,7 @@ export default defineConfig({
   server: {
     port: 8083,
     cors: true,
+    hmr: false,
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
