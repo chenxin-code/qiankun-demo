@@ -84,18 +84,21 @@ function loadApp(appId: string) {
 
   currentApp.value = appId
 
-  microApp = loadMicroApp(
-    {
-      name: `sub-app-${appId}`,
-      entry: `//localhost:${config.port}`,
-      container: '#sub-app-container',
-    },
-    {
-      sandbox: {
-        experimentalStyleIsolation: true,
+  // Wait for container to be rendered
+  setTimeout(() => {
+    microApp = loadMicroApp(
+      {
+        name: `sub-app-${appId}`,
+        entry: `//localhost:${config.port}`,
+        container: '#sub-app-container',
       },
-    }
-  )
+      {
+        sandbox: {
+          experimentalStyleIsolation: true,
+        },
+      }
+    )
+  }, 0)
 }
 
 onBeforeUnmount(() => {

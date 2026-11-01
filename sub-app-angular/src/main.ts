@@ -48,6 +48,9 @@ export async function unmount() {
     destroyApplication(app);
     app = null;
   }
+  // Clean up DOM
+  const roots = document.querySelectorAll('app-root');
+  roots.forEach(root => root.remove());
 }
 
 export async function update(props: any) {
