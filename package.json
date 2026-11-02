@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:main\" \"npm run dev:vue3\" \"npm run dev:vue2\"",
+    "dev": "concurrently \"npm run dev:main\" \"npm run dev:vue3\" \"npm run dev:vue2\" \"npm run dev:react\" \"npm run dev:angular\"",
     "dev:main": "npm --prefix main-app run dev",
     "dev:vue3": "npm --prefix sub-app-vue3 run dev",
     "dev:vue2": "npm --prefix sub-app-vue2 run dev",
-    "install:all": "npm install && npm --prefix main-app install && npm --prefix sub-app-vue3 install && npm --prefix sub-app-vue2 install"
+    "dev:react": "npm --prefix sub-app-react run dev",
+    "dev:angular": "npm --prefix sub-app-angular run dev",
+    "dev:micro": "concurrently \"npm run dev:main\" \"npm run dev:vue3\" \"npm run dev:vue2\" \"npm run dev:react:micro\" \"npm run dev:angular\"",
+    "dev:react:micro": "npm --prefix sub-app-react run dev:micro",
+    "install:all": "npm install && npm --prefix main-app install && npm --prefix sub-app-vue3 install && npm --prefix sub-app-vue2 install && npm --prefix sub-app-react install && npm --prefix sub-app-angular install"
   },
   "devDependencies": {
     "concurrently": "^9.0.1"
-  },
-  "dependencies": {
-    "main-app": "file:main-app"
   }
 }
