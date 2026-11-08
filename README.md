@@ -117,7 +117,7 @@ npm run build:angular    # Angular 子应用
 - Vue3 子应用：`sub-app-vue3/dist/`
 - Vue2 子应用：`sub-app-vue2/dist/`
 - React 子应用：`sub-app-react/dist/`
-- Angular 子应用：`sub-app-angular/dist/sub-app-angular/`
+- Angular 子应用：`sub-app-angular/dist/`
 
 **部署说明**：
 1. 将各个 dist 目录部署到服务器
