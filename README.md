@@ -2,6 +2,8 @@
 
 基于 qiankun 的微前端实践项目，展示如何在主应用中集成多个不同技术栈的子应用。
 
+**在线演示**：https://chenxin-code.github.io/qiankun-demo/
+
 ## 技术栈
 
 ### 主应用
@@ -120,15 +122,29 @@ npm run build:angular    # Angular 子应用
 - Angular 子应用：`sub-app-angular/dist/`
 
 **部署说明**：
+
+方式一：手动部署
 1. 将各个 dist 目录部署到服务器
 2. 主应用需要配置 qiankun 注册信息，指向子应用的线上地址
 3. 子应用需要配置正确的 publicPath 和跨域访问
+
+方式二：GitHub Pages 部署
+```bash
+# 使用部署脚本（PowerShell）
+.\deploy.ps1
+
+# 或使用 Bash
+./deploy.sh
+```
+部署后访问：`https://chenxin-code.github.io/qiankun-demo/`
+
+> 注意：部署到子目录时，需要配置各应用的 base/publicPath 为对应路径
 
 ## 功能特性
 
 ### 主应用
 - 子应用卡片展示，支持点击加载/卸载
-- 子应用独立运行按钮（新标签页打开）
+- 开发模式显示子应用独立运行按钮（新标签页打开）
 - 响应式网格布局
 - 运行状态实时显示
 
@@ -153,7 +169,7 @@ npm run build:angular    # Angular 子应用
 output: {
   library: 'sub-app-angular',
   libraryTarget: 'umd',
-  publicPath: '/',
+  publicPath: '/qiankun-demo/sub-app-angular/',  // 根据部署路径调整
 }
 ```
 
