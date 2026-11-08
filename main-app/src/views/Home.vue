@@ -14,7 +14,7 @@
         </div>
         <h4>{{ app.name }}</h4>
         <p class="app-tech">{{ app.tech }}</p>
-        <div class="app-footer">
+        <div class="app-footer" v-if="isDev">
           <span class="app-port">:{{ app.port }}</span>
           <button class="open-btn" @click.stop="openApp(app.port)">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -33,6 +33,8 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
 import { loadMicroApp } from 'qiankun'
+
+const isDev = import.meta.env.DEV
 
 interface SubApp {
   id: string
