@@ -40,14 +40,15 @@ interface SubApp {
   badge: string
   tech: string
   port: number
+  entry: string
   theme: string
 }
 
 const subApps: SubApp[] = [
-  { id: 'vue3', name: 'Vue3 App', badge: '子应用', tech: 'Vue3 + Element Plus', port: 8081, theme: 'vue3' },
-  { id: 'vue2', name: 'Vue2 App', badge: '子应用', tech: 'Vue2 + Element UI', port: 8082, theme: 'vue2' },
-  { id: 'react', name: 'React App', badge: '子应用', tech: 'React 19 + Ant Design', port: 8083, theme: 'react' },
-  { id: 'angular', name: 'Angular App', badge: '子应用', tech: 'Angular 17 + Material', port: 8084, theme: 'angular' },
+  { id: 'vue3', name: 'Vue3 App', badge: '子应用', tech: 'Vue3 + Element Plus', port: 8081, entry: '/qiankun-demo/sub-app-vue3/', theme: 'vue3' },
+  { id: 'vue2', name: 'Vue2 App', badge: '子应用', tech: 'Vue2 + Element UI', port: 8082, entry: '/qiankun-demo/sub-app-vue2/', theme: 'vue2' },
+  { id: 'react', name: 'React App', badge: '子应用', tech: 'React 19 + Ant Design', port: 8083, entry: '/qiankun-demo/sub-app-react/', theme: 'react' },
+  { id: 'angular', name: 'Angular App', badge: '子应用', tech: 'Angular 17 + Material', port: 8084, entry: '/qiankun-demo/sub-app-angular/', theme: 'angular' },
 ]
 
 const currentApp = ref<string>('')
@@ -58,7 +59,10 @@ function getAppConfig(id: string) {
 }
 
 function openApp(port: number) {
-  window.open(`http://localhost:${port}`, '_blank')
+  // 开发模式用 localhost，生产模式用相对路径
+  if (import.meta.env.DEV) {
+    window.open(`http://localhost:${port}`, '_blank')
+  }
 }
 
 function loadApp(appId: string) {
@@ -79,12 +83,17 @@ function loadApp(appId: string) {
 
   currentApp.value = appId
 
+  // 开发模式用 localhost，生产模式用相对路径
+  const entry = import.meta.env.DEV
+    ? `//localhost:${config.port}`
+    : config.entry
+
   // Wait for container to be rendered
   setTimeout(() => {
     microApp = loadMicroApp(
       {
         name: `sub-app-${appId}`,
-        entry: `//localhost:${config.port}`,
+        entry,
         container: '#sub-app-container',
       },
       {

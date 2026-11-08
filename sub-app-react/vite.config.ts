@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import qiankun from 'vite-plugin-qiankun'
 
 export default defineConfig({
-  base: './',
+  base: '/qiankun-demo/sub-app-react/',
   plugins: [
     react({
       reactRefresh: false,

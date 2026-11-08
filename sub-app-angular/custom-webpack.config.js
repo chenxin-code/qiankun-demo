@@ -2,7 +2,7 @@ module.exports = {
   output: {
     library: 'sub-app-angular',
     libraryTarget: 'umd',
-    publicPath: '/',
+    publicPath: '/qiankun-demo/sub-app-angular/',
     chunkLoadingGlobal: 'webpackJsonp_sub_app_angular',
   },
   devServer: {
