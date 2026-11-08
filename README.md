@@ -40,6 +40,10 @@ qiankun-demo/
 ### 安装依赖
 
 ```bash
+# 一键安装所有应用依赖（推荐）
+npm run install:all
+
+# 或者分别安装
 # 安装根目录依赖
 npm install
 
@@ -58,6 +62,10 @@ cd ../sub-app-angular && npm install
 需要同时启动主应用和所有子应用：
 
 ```bash
+# 一键启动所有应用（推荐）
+npm run dev
+
+# 或者分别启动
 # 终端 1：启动主应用
 cd main-app && npm run dev
 
@@ -75,6 +83,46 @@ cd sub-app-angular && npm run dev
 ```
 
 访问 http://localhost:8080 查看主应用。
+
+**微前端测试模式**：
+
+由于 React 子应用的 HMR 与 qiankun 存在冲突，提供了微前端测试模式：
+
+```bash
+# 一键启动所有应用（React 使用 micro 模式）
+npm run dev:micro
+
+# 或者单独启动 React 微前端模式
+npm run dev:react:micro
+```
+
+> 注意：在微前端模式下，React 子应用禁用了 HMR，其他子应用不受影响。
+
+### 打包部署
+
+```bash
+# 一键打包所有应用（推荐）
+npm run build
+
+# 或者分别打包
+npm run build:main       # 主应用
+npm run build:vue3       # Vue3 子应用
+npm run build:vue2       # Vue2 子应用
+npm run build:react      # React 子应用
+npm run build:angular    # Angular 子应用
+```
+
+**打包输出目录**：
+- 主应用：`main-app/dist/`
+- Vue3 子应用：`sub-app-vue3/dist/`
+- Vue2 子应用：`sub-app-vue2/dist/`
+- React 子应用：`sub-app-react/dist/`
+- Angular 子应用：`sub-app-angular/dist/sub-app-angular/`
+
+**部署说明**：
+1. 将各个 dist 目录部署到服务器
+2. 主应用需要配置 qiankun 注册信息，指向子应用的线上地址
+3. 子应用需要配置正确的 publicPath 和跨域访问
 
 ## 功能特性
 

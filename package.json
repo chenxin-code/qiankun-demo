@@ -11,6 +11,12 @@
     "dev:angular": "npm --prefix sub-app-angular run dev",
     "dev:micro": "concurrently \"npm run dev:main\" \"npm run dev:vue3\" \"npm run dev:vue2\" \"npm run dev:react:micro\" \"npm run dev:angular\"",
     "dev:react:micro": "npm --prefix sub-app-react run dev:micro",
+    "build": "npm run build:main && npm run build:vue3 && npm run build:vue2 && npm run build:react && npm run build:angular",
+    "build:main": "npm --prefix main-app run build",
+    "build:vue3": "npm --prefix sub-app-vue3 run build",
+    "build:vue2": "npm --prefix sub-app-vue2 run build",
+    "build:react": "npm --prefix sub-app-react run build",
+    "build:angular": "npm --prefix sub-app-angular run build",
     "install:all": "npm install && npm --prefix main-app install && npm --prefix sub-app-vue3 install && npm --prefix sub-app-vue2 install && npm --prefix sub-app-react install && npm --prefix sub-app-angular install"
   },
   "devDependencies": {
