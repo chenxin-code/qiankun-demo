@@ -14,13 +14,14 @@
         </div>
         <h4>{{ app.name }}</h4>
         <p class="app-tech">{{ app.tech }}</p>
-        <div class="app-footer" v-if="isDev">
-          <span class="app-port">:{{ app.port }}</span>
-          <button class="open-btn" @click.stop="openApp(app.port)">
+        <div class="app-footer">
+          <span class="app-port" v-if="isDev">:{{ app.port }}</span>
+          <span class="app-entry" v-else>{{ app.entry }}</span>
+          <button class="open-btn" @click.stop="openApp(app)">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
             </svg>
-            localhost:{{ app.port }}
+            {{ isDev ? `localhost:${app.port}` : '独立打开' }}
           </button>
         </div>
       </div>
@@ -60,10 +61,11 @@ function getAppConfig(id: string) {
   return subApps.find(app => app.id === id)
 }
 
-function openApp(port: number) {
-  // 开发模式用 localhost，生产模式用相对路径
-  if (import.meta.env.DEV) {
-    window.open(`http://localhost:${port}`, '_blank')
+function openApp(app: SubApp) {
+  if (isDev) {
+    window.open(`http://localhost:${app.port}`, '_blank')
+  } else {
+    window.open(app.entry, '_blank')
   }
 }
 
@@ -244,6 +246,11 @@ onBeforeUnmount(() => {
   font-family: monospace;
 }
 
+.app-entry {
+  font-size: 12px;
+  color: #909399;
+}
+
 .open-btn {
   display: flex;
   align-items: center;
@@ -257,6 +264,7 @@ onBeforeUnmount(() => {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .open-btn:hover {
