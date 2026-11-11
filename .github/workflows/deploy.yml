@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm run install:all
+
+      - name: Build all apps
+        run: npm run build
+
+      - name: Organize dist files
+        run: |
+          mkdir -p _deploy/sub-app-angular
+          cp -r main-app/dist/* _deploy/
+          cp -r sub-app-vue3/dist _deploy/sub-app-vue3
+          cp -r sub-app-vue2/dist _deploy/sub-app-vue2
+          cp -r sub-app-react/dist _deploy/sub-app-react
+          cp -r sub-app-angular/dist/* _deploy/sub-app-angular/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_deploy
