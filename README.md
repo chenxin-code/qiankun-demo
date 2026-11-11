@@ -24,6 +24,8 @@
 
 ```
 qiankun-demo/
+├── .github/workflows/
+│   └── deploy.yml         # GitHub Actions 自动部署
 ├── main-app/              # 主应用（Vue 3）
 ├── sub-app-vue3/          # Vue3 子应用
 ├── sub-app-vue2/          # Vue2 子应用
@@ -123,20 +125,14 @@ npm run build:angular    # Angular 子应用
 
 **部署说明**：
 
-方式一：手动部署
+**自动部署**：push 代码到 master 分支后，GitHub Actions 会自动构建并部署到 `gh-pages` 分支。
+
+访问地址：`https://chenxin-code.github.io/qiankun-demo/`
+
+**手动部署**：
 1. 将各个 dist 目录部署到服务器
 2. 主应用需要配置 qiankun 注册信息，指向子应用的线上地址
 3. 子应用需要配置正确的 publicPath 和跨域访问
-
-方式二：GitHub Pages 部署
-```bash
-# 使用部署脚本（PowerShell）
-.\deploy.ps1
-
-# 或使用 Bash
-./deploy.sh
-```
-部署后访问：`https://chenxin-code.github.io/qiankun-demo/`
 
 > 注意：部署到子目录时，需要配置各应用的 base/publicPath 为对应路径
 
@@ -144,7 +140,8 @@ npm run build:angular    # Angular 子应用
 
 ### 主应用
 - 子应用卡片展示，支持点击加载/卸载
-- 开发模式显示子应用独立运行按钮（新标签页打开）
+- 开发模式显示端口号，生产模式显示子应用入口地址
+- 独立打开按钮（新标签页打开子应用）
 - 响应式网格布局
 - 运行状态实时显示
 
