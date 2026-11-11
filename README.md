@@ -125,16 +125,9 @@ npm run build:angular    # Angular 子应用
 
 **部署说明**：
 
-**自动部署**：push 代码到 master 分支后，GitHub Actions 会自动构建并部署到 `gh-pages` 分支。
+push 代码到 master 分支后，GitHub Actions 会自动构建并部署到 `gh-pages` 分支。
 
 访问地址：`https://chenxin-code.github.io/qiankun-demo/`
-
-**手动部署**：
-1. 将各个 dist 目录部署到服务器
-2. 主应用需要配置 qiankun 注册信息，指向子应用的线上地址
-3. 子应用需要配置正确的 publicPath 和跨域访问
-
-> 注意：部署到子目录时，需要配置各应用的 base/publicPath 为对应路径
 
 ## 功能特性
 
